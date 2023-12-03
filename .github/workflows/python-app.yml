@@ -12,6 +12,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: python-app
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,15 +33,47 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install --no-root
+      - name: Cache build venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/work/<path>/example-app/.venv
+          key: ${{ runner.os }}-venv
+  statictests:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./example-app
+    steps:
+      - name: Cache build venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/work/<path>/example-app/.venv
+          key: ${{ runner.os }}-venv
       - name: Lint
         run: |
           poetry run task lint
-      - name: Test
-        run: |
-          poetry run task test
       - name: Formatter
         run: |
           poetry run task formatter
       - name: Security
         run: |
           poetry run task security
+  unittests:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./example-app
+    steps:
+      - name: Cache build venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/work/<path>/example-app/.venv
+          key: ${{ runner.os }}-venv
+      - name: Test
+        run: |
+          poetry run task test
