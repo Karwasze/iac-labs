@@ -34,7 +34,7 @@ jobs:
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
-          path: /home/runner/work/<path>/example-app/.venv
+          path: /home/runner/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-venv
   lint:
     needs: build
@@ -47,12 +47,11 @@ jobs:
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
-          path: /home/runner/work/<path>/example-app/.venv
+          path: /home/runner/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-venv
       - name: Lint
         run: |
-          cd example-app
-          poetry run task lint
+          cd example-app && poetry run task lint
   formatter:
     needs: build
     runs-on: ubuntu-latest
@@ -61,12 +60,11 @@ jobs:
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
-          path: /home/runner/work/<path>/example-app/.venv
+          path: /home/runner/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-venv
       - name: Formatter
         run: |
-          cd example-app
-          poetry run task formatter
+          cd example-app && poetry run task formatter
   security:
     needs: build
     runs-on: ubuntu-latest
@@ -78,12 +76,11 @@ jobs:
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
-          path: /home/runner/work/<path>/example-app/.venv
+          path: /home/runner/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-venv
       - name: Security
         run: |
-          cd example-app
-          poetry run task security
+          cd example-app && poetry run task security
   unittests:
     needs: [lint, formatter, security]
     runs-on: ubuntu-latest
@@ -92,9 +89,8 @@ jobs:
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
-          path: /home/runner/work/<path>/example-app/.venv
+          path: /home/runner/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-venv
       - name: Test
         run: |
-          cd example-app
-          poetry run task test
+          cd example-app && poetry run task test
