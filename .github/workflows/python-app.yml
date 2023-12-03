@@ -39,9 +39,6 @@ jobs:
   lint:
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
@@ -51,13 +48,11 @@ jobs:
           key: ${{ runner.os }}-venv
       - name: Lint
         run: |
+          cd example-app
           poetry run task lint
   formatter:
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
@@ -67,6 +62,7 @@ jobs:
           key: ${{ runner.os }}-venv
       - name: Formatter
         run: |
+          cd example-app
           poetry run task formatter
   security:
     needs: build
@@ -83,13 +79,11 @@ jobs:
           key: ${{ runner.os }}-venv
       - name: Security
         run: |
+          cd example-app
           poetry run task security
   unittests:
     needs: [lint, formatter, security]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
@@ -99,4 +93,5 @@ jobs:
           key: ${{ runner.os }}-venv
       - name: Test
         run: |
+          cd example-app
           poetry run task test
