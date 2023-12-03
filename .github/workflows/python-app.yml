@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: example-app
+        working-directory: ./example-app
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.10
@@ -108,6 +108,9 @@ jobs:
   unittests:
     needs: [lint, formatter, security]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./example-app
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.10
