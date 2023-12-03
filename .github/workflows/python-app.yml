@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: .
+        working-directory: ./example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
@@ -51,7 +51,7 @@ jobs:
           key: ${{ runner.os }}-venv
       - name: Lint
         run: |
-          cd example-app && poetry run task lint
+          poetry run task lint --no-root
   formatter:
     needs: build
     runs-on: ubuntu-latest
