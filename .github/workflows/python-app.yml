@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./example-app
+        working-directory: example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./example-app
+        working-directory: example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./example-app
+        working-directory: example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
@@ -85,11 +85,11 @@ jobs:
         run: |
           poetry run task security
   unittests:
-    needs: build
+    needs: [lint, formatter, security]
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./example-app
+        working-directory: example-app
     steps:
       - name: Cache build venv
         id: cached-poetry-dependencies
